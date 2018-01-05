@@ -22,10 +22,6 @@ class ViewController: UIViewController, TagListViewDelegate {
         tagListView.addTag("To Be Removed")
         tagListView.addTag("Quark Shell")
         tagListView.removeTag("To Be Removed")
-        
-        let tagView = tagListView.addTag("gray")
-        tagView.tagBackgroundColor = UIColor.gray
-
         tagListView.insertTag("This should be the third tag", at: 2)
     }
     

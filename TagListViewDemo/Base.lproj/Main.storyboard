@@ -69,6 +69,9 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="tagSelectedBackgroundColor">
                                         <color key="value" red="0.97199046611785889" green="0.13802945613861084" blue="0.17296624183654785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.14117647058823529" green="0.16470588235294117" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <variation key="default">
                                     <mask key="constraints">

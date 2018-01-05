@@ -8,8 +8,8 @@
 
 import UIKit
 
-@objc public protocol TagListViewDelegate {
-    @objc optional func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
+public protocol TagListViewDelegate: class {
+    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
 }
 
 @IBDesignable
@@ -155,11 +155,10 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet open weak var delegate: TagListViewDelegate?
+    open weak var delegate: TagListViewDelegate?
     
-    open private(set) var tagViews: [TagView] = []
-    private var textField: UITextField?
-    private(set) var tagBackgroundViews: [UIView] = []
+    private(set) var tagViews: [TagView] = []
+    private var textField = UITextField()
     private(set) var rowViews: [UIView] = []
     private(set) var tagViewHeight: CGFloat = 0
     private(set) var rows = 0 {
@@ -194,7 +193,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     }
     
     private func rearrangeViews() {
-        let views = tagViews as [UIView] + tagBackgroundViews + rowViews
+        let views = tagViews as [UIView] + rowViews
         for view in views {
             view.removeFromSuperview()
         }
@@ -221,16 +220,17 @@ open class TagListView: UIView, UITextFieldDelegate {
                 tagView.frame.size.width = min(tagView.frame.size.width, frame.width)
             }
             
-            let tagBackgroundView = tagBackgroundViews[index]
-            tagBackgroundView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
-            tagBackgroundView.frame.size = tagView.bounds.size
-            tagBackgroundView.layer.shadowColor = shadowColor.cgColor
-            tagBackgroundView.layer.shadowPath = UIBezierPath(roundedRect: tagBackgroundView.bounds, cornerRadius: cornerRadius).cgPath
-            tagBackgroundView.layer.shadowOffset = shadowOffset
-            tagBackgroundView.layer.shadowOpacity = shadowOpacity
-            tagBackgroundView.layer.shadowRadius = shadowRadius
-            tagBackgroundView.addSubview(tagView)
-            currentRowView.addSubview(tagBackgroundView)
+//            let tagBackgroundView = tagBackgroundViews[index]
+//            tagBackgroundView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
+//            tagBackgroundView.frame.size = tagView.bounds.size
+//            tagBackgroundView.layer.shadowColor = shadowColor.cgColor
+//            tagBackgroundView.layer.shadowPath = UIBezierPath(roundedRect: tagBackgroundView.bounds, cornerRadius: cornerRadius).cgPath
+//            tagBackgroundView.layer.shadowOffset = shadowOffset
+//            tagBackgroundView.layer.shadowOpacity = shadowOpacity
+//            tagBackgroundView.layer.shadowRadius = shadowRadius
+//            tagBackgroundView.addSubview(tagView)
+//            currentRowView.addSubview(tagBackgroundView)
+            currentRowView.addSubview(tagView)
             
             currentRowTagCount += 1
             currentRowWidth += tagView.frame.width + marginX
@@ -299,7 +299,6 @@ open class TagListView: UIView, UITextFieldDelegate {
     open func addTagViews(_ tagViews: [TagView]) -> [TagView] {
         for tagView in tagViews {
             self.tagViews.append(tagView)
-            tagBackgroundViews.append(UIView(frame: tagView.bounds))
         }
         rearrangeViews()
         return tagViews
@@ -313,7 +312,6 @@ open class TagListView: UIView, UITextFieldDelegate {
     @discardableResult
     open func addTagView(_ tagView: TagView) -> TagView {
         tagViews.append(tagView)
-        tagBackgroundViews.append(UIView(frame: tagView.bounds))
         rearrangeViews()
         
         return tagView
@@ -322,7 +320,6 @@ open class TagListView: UIView, UITextFieldDelegate {
     @discardableResult
     open func insertTagView(_ tagView: TagView, at index: Int) -> TagView {
         tagViews.insert(tagView, at: index)
-        tagBackgroundViews.insert(UIView(frame: tagView.bounds), at: index)
         rearrangeViews()
         
         return tagView
@@ -346,19 +343,16 @@ open class TagListView: UIView, UITextFieldDelegate {
         tagView.removeFromSuperview()
         if let index = tagViews.index(of: tagView) {
             tagViews.remove(at: index)
-            tagBackgroundViews.remove(at: index)
         }
         
         rearrangeViews()
     }
     
     open func removeAllTags() {
-        let views = tagViews as [UIView] + tagBackgroundViews
-        for view in views {
+        for view in tagViews {
             view.removeFromSuperview()
         }
         tagViews = []
-        tagBackgroundViews = []
         rearrangeViews()
     }
 
@@ -370,7 +364,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     
     @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {
-            delegate?.tagRemoveButtonPressed?(tagView.currentTitle ?? "", tagView: tagView, sender: self)
+            delegate?.tagRemoveButtonPressed(tagView.currentTitle ?? "", tagView: tagView, sender: self)
         }
     }
     
