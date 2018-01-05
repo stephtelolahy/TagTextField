@@ -89,17 +89,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @objc public enum Alignment: Int {
-        case left
-        case center
-        case right
-    }
-    @IBInspectable open var alignment: Alignment = .left {
-        didSet {
-            rearrangeViews()
-        }
-    }
-    
     @IBInspectable open dynamic var removeButtonIconSize: CGFloat = 12 {
         didSet {
             for tagView in tagViews {
@@ -138,7 +127,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     open weak var delegate: TagListViewDelegate?
     
     private(set) var tagViews: [TagView] = []
-    private var textField = UITextField()
+    private let textField = UITextField()
     private(set) var rowViews: [UIView] = []
     private(set) var tagViewHeight: CGFloat = 0
     private(set) var rows = 0 {
@@ -147,13 +136,23 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
+    // MARK: Init
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.cornerRadius = 10
+        self.layer.borderWidth = 2
+    }
+    
+    
     // MARK: - Interface Builder
     
     open override func prepareForInterfaceBuilder() {
         addTag("Welcome")
         addTag("to")
         addTag("TagListView").isSelected = true
-        textField = createTextField()
     }
     
     // MARK: - Layout
@@ -162,14 +161,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         super.layoutSubviews()
         
         rearrangeViews()
-    }
-    
-    private func createTextField() -> UITextField {
-        let textField = UITextField()
-        textField.layer.borderColor = UIColor(red:0.12, green:0.55, blue:0.84, alpha:1).cgColor
-        textField.layer.borderWidth = 2.0
-        textField.delegate = self
-        return textField
     }
     
     private func rearrangeViews() {
@@ -192,7 +183,9 @@ open class TagListView: UIView, UITextFieldDelegate {
                 currentRowWidth = 0
                 currentRowTagCount = 0
                 currentRowView = UIView()
-                currentRowView.frame.origin.y = CGFloat(currentRow - 1) * (tagViewHeight + marginY)
+                
+                currentRowView.frame.origin = CGPoint(x: marginX, y: marginY + CGFloat(currentRow - 1) * (tagViewHeight + marginY))
+                currentRowView.backgroundColor = UIColor.red
                 
                 rowViews.append(currentRowView)
                 addSubview(currentRowView)
@@ -206,14 +199,6 @@ open class TagListView: UIView, UITextFieldDelegate {
             currentRowTagCount += 1
             currentRowWidth += tagView.frame.width + marginX
             
-            switch alignment {
-            case .left:
-                currentRowView.frame.origin.x = 0
-            case .center:
-                currentRowView.frame.origin.x = (frame.width - (currentRowWidth - marginX)) / 2
-            case .right:
-                currentRowView.frame.origin.x = frame.width - (currentRowWidth - marginX)
-            }
             currentRowView.frame.size.width = currentRowWidth
             currentRowView.frame.size.height = max(tagViewHeight, currentRowView.frame.height)
         }
@@ -225,9 +210,9 @@ open class TagListView: UIView, UITextFieldDelegate {
     // MARK: - Manage tags
     
     override open var intrinsicContentSize: CGSize {
-        var height = CGFloat(rows) * (tagViewHeight + marginY)
+        var height = CGFloat(0)
         if rows > 0 {
-            height -= marginY
+            height =  CGFloat(rows) * (tagViewHeight + marginY) + marginY
         }
         return CGSize(width: frame.width, height: height)
     }
