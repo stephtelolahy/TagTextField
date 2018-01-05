@@ -14,7 +14,7 @@ import UIKit
 }
 
 @IBDesignable
-open class TagListView: UIView {
+open class TagListView: UIView, UITextFieldDelegate {
     
     @IBInspectable open dynamic var textColor: UIColor = UIColor.white {
         didSet {
@@ -200,6 +200,7 @@ open class TagListView: UIView {
     @IBOutlet open weak var delegate: TagListViewDelegate?
     
     open private(set) var tagViews: [TagView] = []
+    private var textField: UITextField?
     private(set) var tagBackgroundViews: [UIView] = []
     private(set) var rowViews: [UIView] = []
     private(set) var tagViewHeight: CGFloat = 0
@@ -215,6 +216,7 @@ open class TagListView: UIView {
         addTag("Welcome")
         addTag("to")
         addTag("TagListView").isSelected = true
+        textField = createTextField()
     }
     
     // MARK: - Layout
@@ -223,6 +225,14 @@ open class TagListView: UIView {
         super.layoutSubviews()
         
         rearrangeViews()
+    }
+    
+    private func createTextField() -> UITextField {
+        let textField = UITextField()
+        textField.layer.borderColor = UIColor(red:0.12, green:0.55, blue:0.84, alpha:1).cgColor
+        textField.layer.borderWidth = 2.0
+        textField.delegate = self
+        return textField
     }
     
     private func rearrangeViews() {
@@ -422,5 +432,15 @@ open class TagListView: UIView {
         if let tagView = closeButton.tagView {
             delegate?.tagRemoveButtonPressed?(tagView.currentTitle ?? "", tagView: tagView, sender: self)
         }
+    }
+    
+    // MARK: UITextFieldDelegate
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text {
+            self.addTag(text)
+            textField.text = ""
+        }
+        return false
     }
 }
