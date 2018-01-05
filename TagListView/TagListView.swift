@@ -178,19 +178,18 @@ open class TagListView: UIView, UITextFieldDelegate {
             tagView.frame.size = tagView.intrinsicContentSize
             tagViewHeight = tagView.frame.height
             
-            if currentRowTagCount == 0 || currentRowWidth + tagView.frame.width > frame.width {
+            if currentRowTagCount == 0 || (currentRowWidth + tagView.frame.width + 2 * marginX) > frame.width {
                 currentRow += 1
                 currentRowWidth = 0
                 currentRowTagCount = 0
                 currentRowView = UIView()
                 
                 currentRowView.frame.origin = CGPoint(x: marginX, y: marginY + CGFloat(currentRow - 1) * (tagViewHeight + marginY))
-                currentRowView.backgroundColor = UIColor.red
                 
                 rowViews.append(currentRowView)
                 addSubview(currentRowView)
 
-                tagView.frame.size.width = min(tagView.frame.size.width, frame.width)
+                tagView.frame.size.width = min(tagView.frame.size.width, frame.width - 2 * marginX)
             }
             
             tagView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
