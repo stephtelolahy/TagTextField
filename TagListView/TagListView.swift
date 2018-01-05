@@ -141,9 +141,13 @@ open class TagListView: UIView, UITextFieldDelegate {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.layer.borderColor = UIColor.lightGray.cgColor
-        self.layer.cornerRadius = 10
-        self.layer.borderWidth = 2
+        layer.borderColor = UIColor.lightGray.cgColor
+        layer.cornerRadius = 10
+        layer.borderWidth = 2
+        
+        textField.backgroundColor = UIColor.yellow
+        textField.delegate = self
+        textField.placeholder = "Start typing ..."
     }
     
     
@@ -164,6 +168,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     }
     
     private func rearrangeViews() {
+        
         let views = tagViews as [UIView] + rowViews
         for view in views {
             view.removeFromSuperview()
@@ -174,11 +179,28 @@ open class TagListView: UIView, UITextFieldDelegate {
         var currentRowView: UIView!
         var currentRowTagCount = 0
         var currentRowWidth: CGFloat = 0
-        for (index, tagView) in tagViews.enumerated() {
-            tagView.frame.size = tagView.intrinsicContentSize
-            tagViewHeight = tagView.frame.height
+        
+        var childViews: [UIView] = []
+        for tagView in tagViews {
+            childViews.append(tagView)
+        }
+        childViews.append(textField)
+        
+        for view in childViews {
             
-            if currentRowTagCount == 0 || (currentRowWidth + tagView.frame.width + 2 * marginX) > frame.width {
+            var size: CGSize
+            if let tagView = view as? TagView {
+                size = tagView.intrinsicContentSize
+                tagViewHeight = view.frame.height
+            } else {
+                // view is UITextField
+                let width = max(120, frame.width - 2 * marginX - currentRowWidth)
+                size = CGSize(width: width, height: tagViewHeight)
+            }
+            
+            view.frame.size = size
+            
+            if currentRowTagCount == 0 || (currentRowWidth + view.frame.width + 2 * marginX) > frame.width {
                 currentRow += 1
                 currentRowWidth = 0
                 currentRowTagCount = 0
@@ -189,14 +211,14 @@ open class TagListView: UIView, UITextFieldDelegate {
                 rowViews.append(currentRowView)
                 addSubview(currentRowView)
 
-                tagView.frame.size.width = min(tagView.frame.size.width, frame.width - 2 * marginX)
+                view.frame.size.width = min(view.frame.size.width, frame.width - 2 * marginX)
             }
             
-            tagView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
-            currentRowView.addSubview(tagView)
+            view.frame.origin = CGPoint(x: currentRowWidth, y: 0)
+            currentRowView.addSubview(view)
             
             currentRowTagCount += 1
-            currentRowWidth += tagView.frame.width + marginX
+            currentRowWidth += view.frame.width + marginX
             
             currentRowView.frame.size.width = currentRowWidth
             currentRowView.frame.size.height = max(tagViewHeight, currentRowView.frame.height)
