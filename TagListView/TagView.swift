@@ -41,14 +41,14 @@ open class TagView: UIButton {
         }
     }
     
-    @IBInspectable open var paddingY: CGFloat = 2 {
+    @IBInspectable open var paddingY: CGFloat = 15 {
         didSet {
             titleEdgeInsets.top = paddingY
             titleEdgeInsets.bottom = paddingY
         }
     }
     
-    @IBInspectable open var paddingX: CGFloat = 5 {
+    @IBInspectable open var paddingX: CGFloat = 12 {
         didSet {
             titleEdgeInsets.left = paddingX
             updateRightInsets()
@@ -61,7 +61,7 @@ open class TagView: UIButton {
         }
     }
     
-    var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
+    var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
         didSet {
             titleLabel?.font = textFont
         }

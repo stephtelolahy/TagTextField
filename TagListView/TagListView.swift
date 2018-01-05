@@ -99,26 +99,6 @@ open class TagListView: UIView, UITextFieldDelegate {
             rearrangeViews()
         }
     }
-    @IBInspectable open dynamic var shadowColor: UIColor = UIColor.white {
-        didSet {
-            rearrangeViews()
-        }
-    }
-    @IBInspectable open dynamic var shadowRadius: CGFloat = 0 {
-        didSet {
-            rearrangeViews()
-        }
-    }
-    @IBInspectable open dynamic var shadowOffset: CGSize = CGSize.zero {
-        didSet {
-            rearrangeViews()
-        }
-    }
-    @IBInspectable open dynamic var shadowOpacity: Float = 0 {
-        didSet {
-            rearrangeViews()
-        }
-    }
     
     @IBInspectable open dynamic var removeButtonIconSize: CGFloat = 12 {
         didSet {
@@ -146,7 +126,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @objc open dynamic var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
+    @objc open dynamic var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
         didSet {
             for tagView in tagViews {
                 tagView.textFont = textFont
@@ -220,16 +200,7 @@ open class TagListView: UIView, UITextFieldDelegate {
                 tagView.frame.size.width = min(tagView.frame.size.width, frame.width)
             }
             
-//            let tagBackgroundView = tagBackgroundViews[index]
-//            tagBackgroundView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
-//            tagBackgroundView.frame.size = tagView.bounds.size
-//            tagBackgroundView.layer.shadowColor = shadowColor.cgColor
-//            tagBackgroundView.layer.shadowPath = UIBezierPath(roundedRect: tagBackgroundView.bounds, cornerRadius: cornerRadius).cgPath
-//            tagBackgroundView.layer.shadowOffset = shadowOffset
-//            tagBackgroundView.layer.shadowOpacity = shadowOpacity
-//            tagBackgroundView.layer.shadowRadius = shadowRadius
-//            tagBackgroundView.addSubview(tagView)
-//            currentRowView.addSubview(tagBackgroundView)
+            tagView.frame.origin = CGPoint(x: currentRowWidth, y: 0)
             currentRowView.addSubview(tagView)
             
             currentRowTagCount += 1
