@@ -125,9 +125,9 @@
 		1A6076E41AFED91A009EA00E /* TagListView */ = {
 			isa = PBXGroup;
 			children = (
+				FFBD46381C6E1AA60045684A /* CloseButton.swift */,
 				1A6076DE1AFED38F009EA00E /* TagView.swift */,
 				1A6076E21AFED866009EA00E /* TagListView.swift */,
-				FFBD46381C6E1AA60045684A /* CloseButton.swift */,
 			);
 			name = TagListView;
 			sourceTree = "<group>";

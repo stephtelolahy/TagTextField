@@ -22,24 +22,14 @@ class ViewController: UIViewController, TagListViewDelegate {
         tagListView.addTag("To Be Removed")
         tagListView.addTag("Quark Shell")
         tagListView.removeTag("To Be Removed")
-        tagListView.addTag("On tap will be removed").onTap = { [weak self] tagView in
-            self?.tagListView.removeTagView(tagView)
-        }
         
         let tagView = tagListView.addTag("gray")
         tagView.tagBackgroundColor = UIColor.gray
-        tagView.onTap = { tagView in
-            print("Don’t tap me!")
-        }
 
         tagListView.insertTag("This should be the third tag", at: 2)
     }
     
     // MARK: TagListViewDelegate
-    func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-        print("Tag pressed: \(title), \(sender)")
-        tagView.isSelected = !tagView.isSelected
-    }
     
     func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
         print("Tag Remove pressed: \(title), \(sender)")

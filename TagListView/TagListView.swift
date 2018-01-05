@@ -9,7 +9,6 @@
 import UIKit
 
 @objc public protocol TagListViewDelegate {
-    @objc optional func tagPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
     @objc optional func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
 }
 
@@ -24,14 +23,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable open dynamic var selectedTextColor: UIColor = UIColor.white {
-        didSet {
-            for tagView in tagViews {
-                tagView.selectedTextColor = selectedTextColor
-            }
-        }
-    }
-
     @IBInspectable open dynamic var tagLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
         didSet {
             for tagView in tagViews {
@@ -44,22 +35,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         didSet {
             for tagView in tagViews {
                 tagView.tagBackgroundColor = tagBackgroundColor
-            }
-        }
-    }
-    
-    @IBInspectable open dynamic var tagHighlightedBackgroundColor: UIColor? {
-        didSet {
-            for tagView in tagViews {
-                tagView.highlightedBackgroundColor = tagHighlightedBackgroundColor
-            }
-        }
-    }
-    
-    @IBInspectable open dynamic var tagSelectedBackgroundColor: UIColor? {
-        didSet {
-            for tagView in tagViews {
-                tagView.selectedBackgroundColor = tagSelectedBackgroundColor
             }
         }
     }
@@ -83,14 +58,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         didSet {
             for tagView in tagViews {
                 tagView.borderColor = borderColor
-            }
-        }
-    }
-    
-    @IBInspectable open dynamic var selectedBorderColor: UIColor? {
-        didSet {
-            for tagView in tagViews {
-                tagView.selectedBorderColor = selectedBorderColor
             }
         }
     }
@@ -149,15 +116,6 @@ open class TagListView: UIView, UITextFieldDelegate {
     }
     @IBInspectable open dynamic var shadowOpacity: Float = 0 {
         didSet {
-            rearrangeViews()
-        }
-    }
-    
-    @IBInspectable open dynamic var enableRemoveButton: Bool = false {
-        didSet {
-            for tagView in tagViews {
-                tagView.enableRemoveButton = enableRemoveButton
-            }
             rearrangeViews()
         }
     }
@@ -307,31 +265,18 @@ open class TagListView: UIView, UITextFieldDelegate {
         let tagView = TagView(title: title)
         
         tagView.textColor = textColor
-        tagView.selectedTextColor = selectedTextColor
         tagView.tagBackgroundColor = tagBackgroundColor
-        tagView.highlightedBackgroundColor = tagHighlightedBackgroundColor
-        tagView.selectedBackgroundColor = tagSelectedBackgroundColor
         tagView.titleLineBreakMode = tagLineBreakMode
         tagView.cornerRadius = cornerRadius
         tagView.borderWidth = borderWidth
         tagView.borderColor = borderColor
-        tagView.selectedBorderColor = selectedBorderColor
         tagView.paddingX = paddingX
         tagView.paddingY = paddingY
         tagView.textFont = textFont
         tagView.removeIconLineWidth = removeIconLineWidth
         tagView.removeButtonIconSize = removeButtonIconSize
-        tagView.enableRemoveButton = enableRemoveButton
         tagView.removeIconLineColor = removeIconLineColor
-        tagView.addTarget(self, action: #selector(tagPressed(_:)), for: .touchUpInside)
         tagView.removeButton.addTarget(self, action: #selector(removeButtonPressed(_:)), for: .touchUpInside)
-        
-        // On long press, deselect all tags except this one
-        tagView.onLongPress = { [unowned self] this in
-            for tag in self.tagViews {
-                tag.isSelected = (tag == this)
-            }
-        }
         
         return tagView
     }
@@ -422,11 +367,6 @@ open class TagListView: UIView, UITextFieldDelegate {
     }
     
     // MARK: - Events
-    
-    @objc func tagPressed(_ sender: TagView!) {
-        sender.onTap?(sender)
-        delegate?.tagPressed?(sender.currentTitle ?? "", tagView: sender, sender: self)
-    }
     
     @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {

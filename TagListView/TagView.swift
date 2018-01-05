@@ -34,22 +34,20 @@ open class TagView: UIButton {
             reloadStyles()
         }
     }
-    @IBInspectable open var selectedTextColor: UIColor = UIColor.white {
-        didSet {
-            reloadStyles()
-        }
-    }
+    
     @IBInspectable open var titleLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
         didSet {
             titleLabel?.lineBreakMode = titleLineBreakMode
         }
     }
+    
     @IBInspectable open var paddingY: CGFloat = 2 {
         didSet {
             titleEdgeInsets.top = paddingY
             titleEdgeInsets.bottom = paddingY
         }
     }
+    
     @IBInspectable open var paddingX: CGFloat = 5 {
         didSet {
             titleEdgeInsets.left = paddingX
@@ -63,24 +61,6 @@ open class TagView: UIButton {
         }
     }
     
-    @IBInspectable open var highlightedBackgroundColor: UIColor? {
-        didSet {
-            reloadStyles()
-        }
-    }
-    
-    @IBInspectable open var selectedBorderColor: UIColor? {
-        didSet {
-            reloadStyles()
-        }
-    }
-    
-    @IBInspectable open var selectedBackgroundColor: UIColor? {
-        didSet {
-            reloadStyles()
-        }
-    }
-    
     var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             titleLabel?.font = textFont
@@ -88,47 +68,14 @@ open class TagView: UIButton {
     }
     
     private func reloadStyles() {
-        if isHighlighted {
-            if let highlightedBackgroundColor = highlightedBackgroundColor {
-                // For highlighted, if it's nil, we should not fallback to backgroundColor.
-                // Instead, we keep the current color.
-                backgroundColor = highlightedBackgroundColor
-            }
-        }
-        else if isSelected {
-            backgroundColor = selectedBackgroundColor ?? tagBackgroundColor
-            layer.borderColor = selectedBorderColor?.cgColor ?? borderColor?.cgColor
-            setTitleColor(selectedTextColor, for: UIControlState())
-        }
-        else {
-            backgroundColor = tagBackgroundColor
-            layer.borderColor = borderColor?.cgColor
-            setTitleColor(textColor, for: UIControlState())
-        }
-    }
-    
-    override open var isHighlighted: Bool {
-        didSet {
-            reloadStyles()
-        }
-    }
-    
-    override open var isSelected: Bool {
-        didSet {
-            reloadStyles()
-        }
+        backgroundColor = tagBackgroundColor
+        layer.borderColor = borderColor?.cgColor
+        setTitleColor(textColor, for: UIControlState())
     }
     
     // MARK: remove button
     
     let removeButton = CloseButton()
-    
-    @IBInspectable open var enableRemoveButton: Bool = false {
-        didSet {
-            removeButton.isHidden = !enableRemoveButton
-            updateRightInsets()
-        }
-    }
     
     @IBInspectable open var removeButtonIconSize: CGFloat = 12 {
         didSet {
@@ -147,10 +94,6 @@ open class TagView: UIButton {
             removeButton.lineColor = removeIconLineColor
         }
     }
-    
-    /// Handles Tap (TouchUpInside)
-    open var onTap: ((TagView) -> Void)?
-    open var onLongPress: ((TagView) -> Void)?
     
     // MARK: - init
     
@@ -173,13 +116,6 @@ open class TagView: UIButton {
         frame.size = intrinsicContentSize
         addSubview(removeButton)
         removeButton.tagView = self
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
-        self.addGestureRecognizer(longPress)
-    }
-    
-    @objc func longPress() {
-        onLongPress?(self)
     }
     
     // MARK: - layout
@@ -191,28 +127,22 @@ open class TagView: UIButton {
         if size.width < size.height {
             size.width = size.height
         }
-        if enableRemoveButton {
-            size.width += removeButtonIconSize + paddingX
-        }
+        // with removeButton
+        size.width += removeButtonIconSize + paddingX
         return size
     }
     
     private func updateRightInsets() {
-        if enableRemoveButton {
-            titleEdgeInsets.right = paddingX  + removeButtonIconSize + paddingX
-        }
-        else {
-            titleEdgeInsets.right = paddingX
-        }
+        // with removeButton
+        titleEdgeInsets.right = paddingX  + removeButtonIconSize + paddingX
     }
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        if enableRemoveButton {
-            removeButton.frame.size.width = paddingX + removeButtonIconSize + paddingX
-            removeButton.frame.origin.x = self.frame.width - removeButton.frame.width
-            removeButton.frame.size.height = self.frame.height
-            removeButton.frame.origin.y = 0
-        }
+        // with removeButton
+        removeButton.frame.size.width = paddingX + removeButtonIconSize + paddingX
+        removeButton.frame.origin.x = self.frame.width - removeButton.frame.width
+        removeButton.frame.size.height = self.frame.height
+        removeButton.frame.origin.y = 0
     }
 }
