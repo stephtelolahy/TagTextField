@@ -28,58 +28,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Epd-YJ-I6a" customClass="TagListView" customModule="TagListViewDemo" customModuleProvider="target">
-                                                    <rect key="frame" x="30" y="30" width="315" height="185"/>
+                                                    <rect key="frame" x="30" y="30" width="315" height="200"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="paddingY">
-                                                            <real key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="paddingX">
-                                                            <real key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="marginY">
-                                                            <real key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="marginX">
-                                                            <real key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="removeButtonIconSize">
-                                                            <integer key="value" value="7"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="removeIconLineColor">
-                                                            <color key="value" red="0.14117647059999999" green="0.1647058824" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
-                                                            <color key="value" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="textFieldColor">
-                                                            <color key="value" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="removeIconLineWidth">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="emptyPlaceholder" value="start typing"/>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="morePlaceholder" value="add more"/>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Epd-YJ-I6a" secondAttribute="bottom" constant="30" id="5gi-PP-Qiq"/>
                                                 <constraint firstItem="Epd-YJ-I6a" firstAttribute="top" secondItem="dpB-l7-Dhf" secondAttribute="top" constant="30" id="FVU-nq-Z3M"/>
                                                 <constraint firstItem="Epd-YJ-I6a" firstAttribute="leading" secondItem="dpB-l7-Dhf" secondAttribute="leading" constant="30" id="TII-I9-DlS"/>
                                                 <constraint firstAttribute="trailing" secondItem="Epd-YJ-I6a" secondAttribute="trailing" constant="30" id="mSY-Oy-4f5"/>
+                                                <constraint firstAttribute="bottom" secondItem="Epd-YJ-I6a" secondAttribute="bottom" constant="44" id="nSo-5L-WqY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.8980392157" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -92,17 +49,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XLe-TT-NY5">
-                                                    <rect key="frame" x="30" y="30" width="42" height="20.5"/>
+                                                    <rect key="frame" x="30" y="30" width="315" height="113"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XLe-TT-NY5" secondAttribute="trailing" constant="30" id="6xn-Fx-XUN"/>
-                                                <constraint firstItem="XLe-TT-NY5" firstAttribute="top" secondItem="uDJ-MP-vnE" secondAttribute="top" constant="30" id="Cu1-Us-asg"/>
-                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XLe-TT-NY5" secondAttribute="bottom" constant="30" id="V9W-RW-Xr2"/>
-                                                <constraint firstItem="XLe-TT-NY5" firstAttribute="leading" secondItem="uDJ-MP-vnE" secondAttribute="leading" constant="30" id="hZN-ki-mUa"/>
+                                                <constraint firstItem="XLe-TT-NY5" firstAttribute="leading" secondItem="uDJ-MP-vnE" secondAttribute="leading" constant="30" id="EEf-6Z-yFa"/>
+                                                <constraint firstAttribute="bottom" secondItem="XLe-TT-NY5" secondAttribute="bottom" constant="30" id="JbX-by-fSO"/>
+                                                <constraint firstItem="XLe-TT-NY5" firstAttribute="top" secondItem="uDJ-MP-vnE" secondAttribute="top" constant="30" id="lBG-55-C08"/>
+                                                <constraint firstAttribute="trailing" secondItem="XLe-TT-NY5" secondAttribute="trailing" constant="30" id="uU7-01-iDH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>

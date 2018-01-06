@@ -8,100 +8,93 @@
 
 import UIKit
 
-@IBDesignable
 open class TagView: UIButton {
     
-    @IBInspectable open var cornerRadius: CGFloat = 0 {
+    open var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
             layer.masksToBounds = cornerRadius > 0
         }
     }
-    @IBInspectable open var borderWidth: CGFloat = 0 {
+    
+    open var borderWidth: CGFloat = 0 {
         didSet {
             layer.borderWidth = borderWidth
         }
     }
     
-    @IBInspectable open var borderColor: UIColor? {
+    open var borderColor: UIColor = .blue {
         didSet {
             reloadStyles()
         }
     }
     
-    @IBInspectable open var tagBackgroundColor: UIColor = UIColor.gray {
+    open var tagBackgroundColor: UIColor = .gray {
         didSet {
             reloadStyles()
         }
     }
     
-    @IBInspectable open var textColor: UIColor = UIColor.white {
+    open var textColor: UIColor = .black {
         didSet {
             reloadStyles()
         }
     }
     
-    var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
+    open var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             titleLabel?.font = textFont
         }
     }
     
-    @IBInspectable open var titleLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
+    open var titleLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
         didSet {
             titleLabel?.lineBreakMode = titleLineBreakMode
         }
     }
     
-    @IBInspectable open var paddingY: CGFloat = 15 {
+    open var paddingY: CGFloat  = 0 {
         didSet {
             titleEdgeInsets.top = paddingY
             titleEdgeInsets.bottom = paddingY
         }
     }
     
-    @IBInspectable open var paddingX: CGFloat = 12 {
+    open var paddingX: CGFloat = 0 {
         didSet {
             titleEdgeInsets.left = paddingX
             updateRightInsets()
         }
     }
     
-    private func reloadStyles() {
-        backgroundColor = tagBackgroundColor
-        layer.borderColor = borderColor?.cgColor
-        setTitleColor(textColor, for: UIControlState())
-    }
-    
-    // MARK: remove button
-    
-    let removeButton = CloseButton()
-    
-    @IBInspectable open var removeButtonIconSize: CGFloat = 12 {
+    open var removeButtonIconSize: CGFloat = 0 {
         didSet {
             removeButton.iconSize = removeButtonIconSize
             updateRightInsets()
         }
     }
     
-    @IBInspectable open var removeIconLineWidth: CGFloat = 3 {
+    open var removeIconLineWidth: CGFloat = 0 {
         didSet {
             removeButton.lineWidth = removeIconLineWidth
         }
     }
-    @IBInspectable open var removeIconLineColor: UIColor = UIColor.white.withAlphaComponent(0.54) {
+    
+    open var removeIconLineColor: UIColor = .gray {
         didSet {
             removeButton.lineColor = removeIconLineColor
         }
     }
     
-    // MARK: - init
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        setupView()
+    private func reloadStyles() {
+        backgroundColor = tagBackgroundColor
+        layer.borderColor = borderColor.cgColor
+        setTitleColor(textColor, for: UIControlState())
     }
+    
+    let removeButton = CloseButton()
+    
+    // MARK: - init
     
     public init(title: String) {
         super.init(frame: CGRect.zero)
@@ -110,9 +103,12 @@ open class TagView: UIButton {
         setupView()
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     private func setupView() {
         titleLabel?.lineBreakMode = titleLineBreakMode
-        
         frame.size = intrinsicContentSize
         addSubview(removeButton)
         removeButton.tagView = self
@@ -146,3 +142,37 @@ open class TagView: UIButton {
         removeButton.frame.origin.y = 0
     }
 }
+
+internal class CloseButton: UIButton {
+    
+    var iconSize: CGFloat = 0
+    var lineWidth: CGFloat = 0
+    var lineColor: UIColor = .blue
+    
+    weak var tagView: TagView?
+    
+    override func draw(_ rect: CGRect) {
+        let path = UIBezierPath()
+        
+        path.lineWidth = lineWidth
+        path.lineCapStyle = .round
+        
+        let iconFrame = CGRect(
+            x: (rect.width - iconSize) / 2.0,
+            y: (rect.height - iconSize) / 2.0,
+            width: iconSize,
+            height: iconSize
+        )
+        
+        path.move(to: iconFrame.origin)
+        path.addLine(to: CGPoint(x: iconFrame.maxX, y: iconFrame.maxY))
+        path.move(to: CGPoint(x: iconFrame.maxX, y: iconFrame.minY))
+        path.addLine(to: CGPoint(x: iconFrame.minX, y: iconFrame.maxY))
+        
+        lineColor.setStroke()
+        
+        path.stroke()
+    }
+    
+}
+

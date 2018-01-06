@@ -8,12 +8,11 @@
 
 import UIKit
 
-@IBDesignable
 open class TagTextField: UITextField {
     
-    @IBInspectable open dynamic var paddingY: CGFloat = 0
+    open var paddingY: CGFloat = 0
     
-    @IBInspectable open dynamic var paddingX: CGFloat = 0
+    open var paddingX: CGFloat = 0
     
     // MARK: - layout
     

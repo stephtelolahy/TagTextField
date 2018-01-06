@@ -8,40 +8,37 @@
 
 import UIKit
 
-public protocol TagListViewDelegate: class {
+/// This custom UIView will display a list of tags and a textField
+open class TagListView: UIView {
     
-    func tagListView(_ sender: TagListView, didAdd title: String)
-    func tagListView(_ sender: TagListView, didRemove title: String)
-}
-
-@IBDesignable
-open class TagListView: UIView, UITextFieldDelegate {
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Public fields
     
-    @IBInspectable open dynamic var textColor: UIColor = UIColor.white {
+    open var tagTextColor: UIColor = UIColor.white {
         didSet {
             for tagView in tagViews {
-                tagView.textColor = textColor
+                tagView.textColor = tagTextColor
             }
         }
     }
     
-    @IBInspectable open dynamic var textFieldColor: UIColor = UIColor.white {
+    open var textFieldColor: UIColor = UIColor.white {
         didSet {
             textField.textColor = textFieldColor
         }
     }
     
-    @objc open dynamic var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
+    open var tagTextFont: UIFont = UIFont.systemFont(ofSize: 18) {
         didSet {
             for tagView in tagViews {
-                tagView.textFont = textFont
+                tagView.textFont = tagTextFont
             }
-            textField.font = textFont
+            textField.font = tagTextFont
             rearrangeViews()
         }
     }
     
-    @IBInspectable open dynamic var tagLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
+    open var tagLineBreakMode: NSLineBreakMode = .byTruncatingMiddle {
         didSet {
             for tagView in tagViews {
                 tagView.titleLineBreakMode = tagLineBreakMode
@@ -49,7 +46,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable open dynamic var tagBackgroundColor: UIColor = UIColor.gray {
+    open var tagBackgroundColor: UIColor = UIColor(red: 74.0/255, green: 144.0/255, blue: 226.0/255, alpha: 1.0) {
         didSet {
             for tagView in tagViews {
                 tagView.tagBackgroundColor = tagBackgroundColor
@@ -57,30 +54,31 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable open dynamic var cornerRadius: CGFloat = 0 {
+    open var tagCornerRadius: CGFloat = 5 {
         didSet {
             for tagView in tagViews {
-                tagView.cornerRadius = cornerRadius
-            }
-        }
-    }
-    @IBInspectable open dynamic var borderWidth: CGFloat = 0 {
-        didSet {
-            for tagView in tagViews {
-                tagView.borderWidth = borderWidth
+                tagView.cornerRadius = tagCornerRadius
             }
         }
     }
     
-    @IBInspectable open dynamic var borderColor: UIColor? {
+    open var tagBorderWidth: CGFloat = 2 {
         didSet {
             for tagView in tagViews {
-                tagView.borderColor = borderColor
+                tagView.borderWidth = tagBorderWidth
             }
         }
     }
     
-    @IBInspectable open dynamic var paddingY: CGFloat = 2 {
+    open var tagBorderColor: UIColor = UIColor.blue {
+        didSet {
+            for tagView in tagViews {
+                tagView.borderColor = tagBorderColor
+            }
+        }
+    }
+    
+    open var paddingY: CGFloat = 15 {
         didSet {
             for tagView in tagViews {
                 tagView.paddingY = paddingY
@@ -89,7 +87,8 @@ open class TagListView: UIView, UITextFieldDelegate {
             rearrangeViews()
         }
     }
-    @IBInspectable open dynamic var paddingX: CGFloat = 5 {
+    
+    open var paddingX: CGFloat = 12 {
         didSet {
             for tagView in tagViews {
                 tagView.paddingX = paddingX
@@ -98,18 +97,20 @@ open class TagListView: UIView, UITextFieldDelegate {
             rearrangeViews()
         }
     }
-    @IBInspectable open dynamic var marginY: CGFloat = 2 {
-        didSet {
-            rearrangeViews()
-        }
-    }
-    @IBInspectable open dynamic var marginX: CGFloat = 5 {
+    
+    open var marginY: CGFloat = 5 {
         didSet {
             rearrangeViews()
         }
     }
     
-    @IBInspectable open dynamic var removeButtonIconSize: CGFloat = 12 {
+    open var marginX: CGFloat = 5 {
+        didSet {
+            rearrangeViews()
+        }
+    }
+    
+    open var removeButtonIconSize: CGFloat = 14 {
         didSet {
             for tagView in tagViews {
                 tagView.removeButtonIconSize = removeButtonIconSize
@@ -117,7 +118,8 @@ open class TagListView: UIView, UITextFieldDelegate {
             rearrangeViews()
         }
     }
-    @IBInspectable open dynamic var removeIconLineWidth: CGFloat = 1 {
+    
+    open var removeIconLineWidth: CGFloat = 3 {
         didSet {
             for tagView in tagViews {
                 tagView.removeIconLineWidth = removeIconLineWidth
@@ -126,7 +128,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    @IBInspectable open dynamic var removeIconLineColor: UIColor = UIColor.white.withAlphaComponent(0.54) {
+    open var removeIconLineColor: UIColor = UIColor.white.withAlphaComponent(0.54) {
         didSet {
             for tagView in tagViews {
                 tagView.removeIconLineColor = removeIconLineColor
@@ -137,71 +139,57 @@ open class TagListView: UIView, UITextFieldDelegate {
     
     
     /// Placeholder while tag list is empty
-    @IBInspectable open dynamic var emptyPlaceholder: String = "Start typing..." {
+    open var emptyPlaceholder: String = "Start typing..." {
         didSet {
             rearrangeViews()
         }
     }
     
     /// Placeholder while tag list is not empty
-    @IBInspectable open dynamic var morePlaceholder: String = "Add another" {
+    open var morePlaceholder: String = "Add another" {
         didSet {
             rearrangeViews()
         }
     }
     
+    /// Object that handle delegate methods
     open weak var delegate: TagListViewDelegate?
+    
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Init
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        layer.borderColor = UIColor.lightGray.cgColor
+        layer.cornerRadius = 10
+        layer.borderWidth = 2
+        
+        textField.delegate = self
+        textField.paddingX = paddingX
+        textField.paddingY = paddingY
+        textField.font = tagTextFont
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Interface Builder
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        addTag("This")
+        addTag("is")
+        addTag("TagListView")
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Private implementation
     
     private let textField = TagTextField()
     private(set) var tagViews: [TagView] = []
     private(set) var rowViews: [UIView] = []
     private(set) var tagViewHeight: CGFloat = 0
     private(set) var rows = 0
-    
-    // MARK: Init
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    func commonInit() {
-        layer.borderColor = UIColor.lightGray.cgColor
-        layer.cornerRadius = 10
-        layer.borderWidth = 2
-        
-        textField.backgroundColor = UIColor.yellow
-        textField.delegate = self
-    }
-    
-    // MARK: Interface Builder
-    
-    open override func prepareForInterfaceBuilder() {
-//        super.prepareForInterfaceBuilder()
-        commonInit()
-        addTag("This")
-        addTag("is")
-        addTag("TagListView")
-    }
-    
-    // MARK: Layout
-    
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        rearrangeViews()
-    }
-    
-    override open var intrinsicContentSize: CGSize {
-        var height = CGFloat(0)
-        if rows > 0 {
-            height =  CGFloat(rows) * (tagViewHeight + marginY) + marginY
-        }
-        return CGSize(width: frame.width, height: height)
-    }
-    
-    
-    // MARK: Private
     
     private func rearrangeViews() {
         
@@ -227,15 +215,8 @@ open class TagListView: UIView, UITextFieldDelegate {
         for view in childViews {
             
             var size = view.intrinsicContentSize
-            if view is UITextField {
-                size.width = max(size.width, frame.width - 2 * marginX - currentRowWidth)
-            }
             
-            tagViewHeight = size.height
-            
-            view.frame.size = size
-            
-            if currentRowTagCount == 0 || (currentRowWidth + view.frame.width + 2 * marginX) > frame.width {
+            if currentRowTagCount == 0 || (currentRowWidth + size.width + 2 * marginX) > frame.width {
                 currentRow += 1
                 currentRowWidth = 0
                 currentRowTagCount = 0
@@ -246,10 +227,17 @@ open class TagListView: UIView, UITextFieldDelegate {
                 rowViews.append(currentRowView)
                 addSubview(currentRowView)
                 
-                view.frame.size.width = min(view.frame.size.width, frame.width - 2 * marginX)
+                size.width = min(size.width, frame.width - 2 * marginX)
             }
             
+            if view is UITextField {
+                size.width = max(size.width, frame.width - 2 * marginX - currentRowWidth)
+            }
+            
+            view.frame.size = size
             view.frame.origin = CGPoint(x: currentRowWidth, y: 0)
+            tagViewHeight = size.height
+            
             currentRowView.addSubview(view)
             
             currentRowTagCount += 1
@@ -266,15 +254,15 @@ open class TagListView: UIView, UITextFieldDelegate {
     private func createNewTagView(_ title: String) -> TagView {
         let tagView = TagView(title: title)
         
-        tagView.textColor = textColor
+        tagView.textColor = tagTextColor
         tagView.tagBackgroundColor = tagBackgroundColor
         tagView.titleLineBreakMode = tagLineBreakMode
-        tagView.cornerRadius = cornerRadius
-        tagView.borderWidth = borderWidth
-        tagView.borderColor = borderColor
+        tagView.cornerRadius = tagCornerRadius
+        tagView.borderWidth = tagBorderWidth
+        tagView.borderColor = tagBorderColor
         tagView.paddingX = paddingX
         tagView.paddingY = paddingY
-        tagView.textFont = textFont
+        tagView.textFont = tagTextFont
         tagView.removeIconLineWidth = removeIconLineWidth
         tagView.removeButtonIconSize = removeButtonIconSize
         tagView.removeIconLineColor = removeIconLineColor
@@ -282,6 +270,26 @@ open class TagListView: UIView, UITextFieldDelegate {
         
         return tagView
     }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Layout
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        rearrangeViews()
+    }
+    
+    override open var intrinsicContentSize: CGSize {
+        var height = CGFloat(0)
+        if rows > 0 {
+            height =  CGFloat(rows) * (tagViewHeight + marginY) + marginY
+        }
+        return CGSize(width: frame.width, height: height)
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Public interface
     
     open func addTags(_ titles: [String]) -> [TagView] {
         var tagViews: [TagView] = []
@@ -334,7 +342,8 @@ open class TagListView: UIView, UITextFieldDelegate {
         rearrangeViews()
     }
     
-    // MARK: - Events
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: Events
     
     @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {
@@ -342,8 +351,12 @@ open class TagListView: UIView, UITextFieldDelegate {
             delegate?.tagListView(self, didRemove: tagView.currentTitle ?? "")
         }
     }
-    
-    // MARK: UITextFieldDelegate
+}
+
+////////////////////////////////////////////////////////////////////////
+// MARK: UITextFieldDelegate
+
+extension TagListView: UITextFieldDelegate {
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = textField.text {
@@ -353,4 +366,13 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
         return false
     }
+}
+
+////////////////////////////////////////////////////////////////////////
+// MARK: Delegate protocol
+
+public protocol TagListViewDelegate: class {
+    
+    func tagListView(_ sender: TagListView, didAdd title: String)
+    func tagListView(_ sender: TagListView, didRemove title: String)
 }
