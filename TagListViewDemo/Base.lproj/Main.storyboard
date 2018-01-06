@@ -20,28 +20,72 @@
                         <sections>
                             <tableViewSection id="6Qc-yf-fqi">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="245" id="z64-qv-5kf">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="245"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="274" id="z64-qv-5kf">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="274"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z64-qv-5kf" id="dpB-l7-Dhf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="245"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="274"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OsY-gz-DmH" customClass="TagListView" customModule="TagListViewDemo" customModuleProvider="target">
-                                                    <rect key="frame" x="30" y="30" width="315" height="86"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Epd-YJ-I6a" customClass="TagListView" customModule="TagListViewDemo" customModuleProvider="target">
+                                                    <rect key="frame" x="30" y="30" width="315" height="185"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="paddingY">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="paddingX">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="marginY">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="marginX">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="removeButtonIconSize">
+                                                            <integer key="value" value="7"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="removeIconLineColor">
+                                                            <color key="value" red="0.14117647059999999" green="0.1647058824" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
+                                                            <color key="value" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textFieldColor">
+                                                            <color key="value" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="removeIconLineWidth">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="emptyPlaceholder" value="start typing"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="morePlaceholder" value="add more"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="OsY-gz-DmH" secondAttribute="bottom" constant="30" id="2MF-zC-IBf"/>
-                                                <constraint firstAttribute="trailing" secondItem="OsY-gz-DmH" secondAttribute="trailing" constant="30" id="KIy-es-hmI"/>
-                                                <constraint firstItem="OsY-gz-DmH" firstAttribute="leading" secondItem="dpB-l7-Dhf" secondAttribute="leading" constant="30" id="Rvh-7z-Qov"/>
-                                                <constraint firstItem="OsY-gz-DmH" firstAttribute="top" secondItem="dpB-l7-Dhf" secondAttribute="top" constant="30" id="U0i-Ed-J0r"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Epd-YJ-I6a" secondAttribute="bottom" constant="30" id="5gi-PP-Qiq"/>
+                                                <constraint firstItem="Epd-YJ-I6a" firstAttribute="top" secondItem="dpB-l7-Dhf" secondAttribute="top" constant="30" id="FVU-nq-Z3M"/>
+                                                <constraint firstItem="Epd-YJ-I6a" firstAttribute="leading" secondItem="dpB-l7-Dhf" secondAttribute="leading" constant="30" id="TII-I9-DlS"/>
+                                                <constraint firstAttribute="trailing" secondItem="Epd-YJ-I6a" secondAttribute="trailing" constant="30" id="mSY-Oy-4f5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.90588235289999997" green="0.8980392157" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="173" id="zcw-h7-7QO">
-                                        <rect key="frame" x="0.0" y="245" width="375" height="173"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="173" id="zcw-h7-7QO">
+                                        <rect key="frame" x="0.0" y="274" width="375" height="173"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zcw-h7-7QO" id="uDJ-MP-vnE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="173"/>
@@ -63,8 +107,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="206" id="P6r-ps-H68">
-                                        <rect key="frame" x="0.0" y="418" width="375" height="206"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="206" id="P6r-ps-H68">
+                                        <rect key="frame" x="0.0" y="447" width="375" height="206"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P6r-ps-H68" id="Q7H-Ql-jKA">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="206"/>
@@ -94,7 +138,7 @@
                     </tableView>
                     <connections>
                         <outlet property="contentLabel" destination="XLe-TT-NY5" id="HSl-Cn-yxT"/>
-                        <outlet property="tagListView" destination="OsY-gz-DmH" id="caT-Si-5P6"/>
+                        <outlet property="tagListView" destination="Epd-YJ-I6a" id="65A-ZH-21F"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2yo-p4-c1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>

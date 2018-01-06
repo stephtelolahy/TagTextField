@@ -38,10 +38,12 @@ extension ViewController: TagListViewDelegate {
     
     func tagListView(_ sender: TagListView, didAdd title: String) {
         print("Tag Added: \(title), \(sender)")
+        self.tableView.reloadData()
     }
     
     func tagListView(_ sender: TagListView, didRemove title: String) {
         print("Tag Removed: \(title), \(sender)")
+        self.tableView.reloadData()
     }
     
 }

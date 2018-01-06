@@ -153,7 +153,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     open weak var delegate: TagListViewDelegate?
     
     private let textField = TagTextField()
-    private var tagViews: [TagView] = []
+    private(set) var tagViews: [TagView] = []
     private(set) var rowViews: [UIView] = []
     private(set) var tagViewHeight: CGFloat = 0
     private(set) var rows = 0
@@ -162,22 +162,23 @@ open class TagListView: UIView, UITextFieldDelegate {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+        commonInit()
+    }
+    
+    func commonInit() {
         layer.borderColor = UIColor.lightGray.cgColor
         layer.cornerRadius = 10
         layer.borderWidth = 2
         
-        // DEBUG color
         textField.backgroundColor = UIColor.yellow
-        
         textField.delegate = self
     }
-    
     
     // MARK: Interface Builder
     
     open override func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
+//        super.prepareForInterfaceBuilder()
+        commonInit()
         addTag("This")
         addTag("is")
         addTag("TagListView")
@@ -282,7 +283,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         return tagView
     }
     
-    private func addTags(_ titles: [String]) -> [TagView] {
+    open func addTags(_ titles: [String]) -> [TagView] {
         var tagViews: [TagView] = []
         for title in titles {
             tagViews.append(createNewTagView(title))
@@ -290,7 +291,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         return addTagViews(tagViews)
     }
     
-    private func addTagViews(_ tagViews: [TagView]) -> [TagView] {
+    open func addTagViews(_ tagViews: [TagView]) -> [TagView] {
         for tagView in tagViews {
             self.tagViews.append(tagView)
         }
@@ -298,17 +299,17 @@ open class TagListView: UIView, UITextFieldDelegate {
         return tagViews
     }
     
-    private func addTagView(_ tagView: TagView) {
+    open func addTagView(_ tagView: TagView) {
         tagViews.append(tagView)
         rearrangeViews()
     }
     
-    private func insertTagView(_ tagView: TagView, at index: Int) {
+    open func insertTagView(_ tagView: TagView, at index: Int) {
         tagViews.insert(tagView, at: index)
         rearrangeViews()
     }
     
-    private func removeTagView(_ tagView: TagView) {
+    open func removeTagView(_ tagView: TagView) {
         tagView.removeFromSuperview()
         if let index = tagViews.index(of: tagView) {
             tagViews.remove(at: index)
@@ -335,7 +336,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     
     // MARK: - Events
     
-    @objc private func removeButtonPressed(_ closeButton: CloseButton!) {
+    @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {
             self.removeTagView(tagView)
             delegate?.tagListView(self, didRemove: tagView.currentTitle ?? "")

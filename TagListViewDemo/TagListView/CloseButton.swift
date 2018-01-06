@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CloseButton: UIButton {
+internal class CloseButton: UIButton {
     
     var iconSize: CGFloat = 10
     var lineWidth: CGFloat = 1

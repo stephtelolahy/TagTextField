@@ -75,9 +75,9 @@
 		1A6076BB1AFED303009EA00E /* TagListViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				ADB6FC372000D08A002289F8 /* TagListView */,
 				1A6076BE1AFED303009EA00E /* AppDelegate.swift */,
 				1A6076C01AFED303009EA00E /* ViewController.swift */,
+				ADB6FC372000D08A002289F8 /* TagListView */,
 				1A6076C21AFED303009EA00E /* Main.storyboard */,
 				1A6076C51AFED303009EA00E /* Images.xcassets */,
 				1A6076C71AFED303009EA00E /* LaunchScreen.xib */,
