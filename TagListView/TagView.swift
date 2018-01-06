@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class TagView: UIButton {
-
+    
     @IBInspectable open var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
@@ -29,9 +29,21 @@ open class TagView: UIButton {
         }
     }
     
+    @IBInspectable open var tagBackgroundColor: UIColor = UIColor.gray {
+        didSet {
+            reloadStyles()
+        }
+    }
+    
     @IBInspectable open var textColor: UIColor = UIColor.white {
         didSet {
             reloadStyles()
+        }
+    }
+    
+    var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
+        didSet {
+            titleLabel?.font = textFont
         }
     }
     
@@ -52,18 +64,6 @@ open class TagView: UIButton {
         didSet {
             titleEdgeInsets.left = paddingX
             updateRightInsets()
-        }
-    }
-
-    @IBInspectable open var tagBackgroundColor: UIColor = UIColor.gray {
-        didSet {
-            reloadStyles()
-        }
-    }
-    
-    var textFont: UIFont = UIFont.systemFont(ofSize: 18) {
-        didSet {
-            titleLabel?.font = textFont
         }
     }
     
@@ -112,14 +112,14 @@ open class TagView: UIButton {
     
     private func setupView() {
         titleLabel?.lineBreakMode = titleLineBreakMode
-
+        
         frame.size = intrinsicContentSize
         addSubview(removeButton)
         removeButton.tagView = self
     }
     
     // MARK: - layout
-
+    
     override open var intrinsicContentSize: CGSize {
         var size = titleLabel?.text?.size(withAttributes: [NSAttributedStringKey.font: textFont]) ?? CGSize.zero
         size.height = textFont.pointSize + paddingY * 2

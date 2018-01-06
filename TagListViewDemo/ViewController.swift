@@ -8,28 +8,32 @@
 
 import UIKit
 
-class ViewController: UIViewController, TagListViewDelegate {
-
+class ViewController: UIViewController {
+    
     @IBOutlet weak var tagListView: TagListView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tagListView.emptyPlaceholder = "Start typing ..."
+        tagListView.morePlaceholder = "Add another"
         tagListView.delegate = self
         tagListView.addTag("TagListView")
         tagListView.addTag("TEAChart")
-        tagListView.addTag("To Be Removed")
-        tagListView.addTag("To Be Removed")
         tagListView.addTag("Quark Shell")
-        tagListView.removeTag("To Be Removed")
         tagListView.insertTag("This should be the third tag", at: 2)
     }
+}
+
+extension ViewController: TagListViewDelegate {
     
-    // MARK: TagListViewDelegate
-    
-    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
-        print("Tag Remove pressed: \(title), \(sender)")
-        sender.removeTagView(tagView)
+    func tagListView(_ sender: TagListView, didAdd title: String) {
+        print("Tag Added: \(title), \(sender)")
     }
+    
+    func tagListView(_ sender: TagListView, didRemove title: String) {
+        print("Tag Removed: \(title), \(sender)")
+    }
+    
 }
 

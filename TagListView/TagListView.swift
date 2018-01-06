@@ -9,7 +9,9 @@
 import UIKit
 
 public protocol TagListViewDelegate: class {
-    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) -> Void
+    
+    func tagListView(_ sender: TagListView, didAdd title: String)
+    func tagListView(_ sender: TagListView, didRemove title: String)
 }
 
 @IBDesignable
@@ -124,17 +126,27 @@ open class TagListView: UIView, UITextFieldDelegate {
         }
     }
     
-    open weak var delegate: TagListViewDelegate?
-    
-    private(set) var tagViews: [TagView] = []
-    private let textField = UITextField()
-    private(set) var rowViews: [UIView] = []
-    private(set) var tagViewHeight: CGFloat = 0
-    private(set) var rows = 0 {
+    /// Placeholder while tag list is empty
+    @IBInspectable open dynamic var emptyPlaceholder: String = "Start typing..." {
         didSet {
-            invalidateIntrinsicContentSize()
+            rearrangeViews()
         }
     }
+    
+    /// Placeholder while tag list is not empty
+    @IBInspectable open dynamic var morePlaceholder: String = "Add another" {
+        didSet {
+            rearrangeViews()
+        }
+    }
+    
+    open weak var delegate: TagListViewDelegate?
+    
+    private let textField = UITextField()
+    private(set) var tagViews: [TagView] = []
+    private(set) var rowViews: [UIView] = []
+    private(set) var tagViewHeight: CGFloat = 0
+    private(set) var rows = 0
     
     // MARK: Init
     
@@ -147,11 +159,10 @@ open class TagListView: UIView, UITextFieldDelegate {
         
         textField.backgroundColor = UIColor.yellow
         textField.delegate = self
-        textField.placeholder = "Start typing ..."
     }
     
     
-    // MARK: - Interface Builder
+    // MARK: Interface Builder
     
     open override func prepareForInterfaceBuilder() {
         addTag("Welcome")
@@ -159,13 +170,24 @@ open class TagListView: UIView, UITextFieldDelegate {
         addTag("TagListView").isSelected = true
     }
     
-    // MARK: - Layout
+    // MARK: Layout
     
     open override func layoutSubviews() {
         super.layoutSubviews()
         
         rearrangeViews()
     }
+    
+    override open var intrinsicContentSize: CGSize {
+        var height = CGFloat(0)
+        if rows > 0 {
+            height =  CGFloat(rows) * (tagViewHeight + marginY) + marginY
+        }
+        return CGSize(width: frame.width, height: height)
+    }
+    
+    
+    // MARK: Private
     
     private func rearrangeViews() {
         
@@ -188,14 +210,14 @@ open class TagListView: UIView, UITextFieldDelegate {
         
         for view in childViews {
             
-            var size: CGSize
+            var size = CGSize()
             if let tagView = view as? TagView {
                 size = tagView.intrinsicContentSize
                 tagViewHeight = view.frame.height
-            } else {
-                // view is UITextField
+            } else if let fieldView = view as? UITextField {
                 let width = max(120, frame.width - 2 * marginX - currentRowWidth)
                 size = CGSize(width: width, height: tagViewHeight)
+                fieldView.placeholder = tagViews.count == 0 ? emptyPlaceholder : morePlaceholder
             }
             
             view.frame.size = size
@@ -210,7 +232,7 @@ open class TagListView: UIView, UITextFieldDelegate {
                 
                 rowViews.append(currentRowView)
                 addSubview(currentRowView)
-
+                
                 view.frame.size.width = min(view.frame.size.width, frame.width - 2 * marginX)
             }
             
@@ -226,16 +248,6 @@ open class TagListView: UIView, UITextFieldDelegate {
         rows = currentRow
         
         invalidateIntrinsicContentSize()
-    }
-    
-    // MARK: - Manage tags
-    
-    override open var intrinsicContentSize: CGSize {
-        var height = CGFloat(0)
-        if rows > 0 {
-            height =  CGFloat(rows) * (tagViewHeight + marginY) + marginY
-        }
-        return CGSize(width: frame.width, height: height)
     }
     
     private func createNewTagView(_ title: String) -> TagView {
@@ -257,7 +269,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         
         return tagView
     }
-
+    
     @discardableResult
     open func addTag(_ title: String) -> TagView {
         return addTagView(createNewTagView(title))
@@ -280,7 +292,7 @@ open class TagListView: UIView, UITextFieldDelegate {
         rearrangeViews()
         return tagViews
     }
-
+    
     @discardableResult
     open func insertTag(_ title: String, at index: Int) -> TagView {
         return insertTagView(createNewTagView(title), at: index)
@@ -293,36 +305,13 @@ open class TagListView: UIView, UITextFieldDelegate {
         
         return tagView
     }
-
+    
     @discardableResult
     open func insertTagView(_ tagView: TagView, at index: Int) -> TagView {
         tagViews.insert(tagView, at: index)
         rearrangeViews()
         
         return tagView
-    }
-    
-    open func setTitle(_ title: String, at index: Int) {
-        tagViews[index].titleLabel?.text = title
-    }
-    
-    open func removeTag(_ title: String) {
-        // loop the array in reversed order to remove items during loop
-        for index in stride(from: (tagViews.count - 1), through: 0, by: -1) {
-            let tagView = tagViews[index]
-            if tagView.currentTitle == title {
-                removeTagView(tagView)
-            }
-        }
-    }
-    
-    open func removeTagView(_ tagView: TagView) {
-        tagView.removeFromSuperview()
-        if let index = tagViews.index(of: tagView) {
-            tagViews.remove(at: index)
-        }
-        
-        rearrangeViews()
     }
     
     open func removeAllTags() {
@@ -332,16 +321,22 @@ open class TagListView: UIView, UITextFieldDelegate {
         tagViews = []
         rearrangeViews()
     }
-
-    open func selectedTags() -> [TagView] {
-        return tagViews.filter() { $0.isSelected == true }
+    
+    private func removeTagView(_ tagView: TagView) {
+        tagView.removeFromSuperview()
+        if let index = tagViews.index(of: tagView) {
+            tagViews.remove(at: index)
+        }
+        
+        rearrangeViews()
     }
     
     // MARK: - Events
     
     @objc func removeButtonPressed(_ closeButton: CloseButton!) {
         if let tagView = closeButton.tagView {
-            delegate?.tagRemoveButtonPressed(tagView.currentTitle ?? "", tagView: tagView, sender: self)
+            self.removeTagView(tagView)
+            delegate?.tagListView(self, didRemove: tagView.currentTitle ?? "")
         }
     }
     
@@ -350,6 +345,7 @@ open class TagListView: UIView, UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = textField.text {
             self.addTag(text)
+            delegate?.tagListView(self, didAdd: text)
             textField.text = ""
         }
         return false
