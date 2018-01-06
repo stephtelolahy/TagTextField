@@ -2,8 +2,8 @@
 //  TagView.swift
 //  TagListViewDemo
 //
-//  Created by Dongyuan Liu on 2015-05-09.
-//  Copyright (c) 2015 Ela. All rights reserved.
+//  Created by Hugues Stéphano TELOLAHY on 1/6/18.
+//  Copyright © 2018 Ela. All rights reserved.
 //
 
 import UIKit

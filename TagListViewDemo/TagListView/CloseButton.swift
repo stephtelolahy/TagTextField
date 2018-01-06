@@ -2,13 +2,13 @@
 //  CloseButton.swift
 //  TagListViewDemo
 //
-//  Created by Benjamin Wu on 2/11/16.
-//  Copyright © 2016 Ela. All rights reserved.
+//  Created by Hugues Stéphano TELOLAHY on 1/6/18.
+//  Copyright © 2018 Ela. All rights reserved.
 //
 
 import UIKit
 
-internal class CloseButton: UIButton {
+class CloseButton: UIButton {
     
     var iconSize: CGFloat = 10
     var lineWidth: CGFloat = 1
